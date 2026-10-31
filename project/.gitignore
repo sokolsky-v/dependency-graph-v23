@@ -1,0 +1,8 @@
+build/
+*.o
+*.exe
+app
+app.exe
+test_app
+test_app.exe
+test_*.json
