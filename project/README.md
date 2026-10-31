@@ -32,13 +32,19 @@
 
 **1. Сборка основного приложения:**
 
-````bash
+```bash
 g++ -std=c++17 -Wall -Wextra -o app.exe src/main.cpp src/config.cpp
+```
+
 **2. Сборка и запуск модульных тестов:**
-````bash
+
+```bash
 g++ -std=c++17 -Wall -Wextra -o test_app.exe tests/test_config.cpp src/config.cpp
 .\test_app.exe
+```
+
 **3. Очистка артефактов сборки:**
-````bash
+
+```bash
 del app.exe test_app.exe
-````
+```
