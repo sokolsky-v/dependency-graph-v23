@@ -1,5 +1,6 @@
 #include "config.hpp"
 #include "maven.hpp"
+#include "graph.hpp"
 #include <iostream>
 
 int main(int argc, char* argv[]) {
@@ -13,23 +14,25 @@ int main(int argc, char* argv[]) {
         std::cout << "--- Config loaded successfully ---\n";
         printConfig(config);
         
-        std::cout << "\n--- Этап 2: Прямые зависимости пакета " << config.packageName 
-                  << " (version: " << config.packageVersion << ") ---\n";
+        std::cout << "\n--- Этап 3: Построение графа зависимостей (DFS с рекурсией) ---\n";
                   
-        auto dependencies = getDirectDependencies(
-            config.repositoryUrl, 
-            config.packageName, 
-            config.packageVersion, 
+        Graph graph = buildDependencyGraph(
+            config.repositoryUrl,
+            config.packageName,
+            config.filterSubstring,
             config.testMode
         );
 
-        if (dependencies.empty()) {
-            std::cout << "Прямые зависимости не найдены или список пуст.\n";
+        if (graph.empty()) {
+            std::cout << "Граф зависимостей пуст.\n";
         } else {
-            for (const auto& dep : dependencies) {
-                std::cout << " - Group: " << dep.groupId 
-                          << ", Artifact: " << dep.artifactId 
-                          << ", Version: " << dep.version << "\n";
+            std::cout << "Построенный граф зависимостей (adjacency list):\n";
+            for (const auto& pair : graph) {
+                std::cout << "Пакет: " << pair.first << " -> Зависимости: ";
+                for (const auto& dep : pair.second) {
+                    std::cout << dep << " ";
+                }
+                std::cout << "\n";
             }
         }
 
