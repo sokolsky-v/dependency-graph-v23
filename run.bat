@@ -2,7 +2,7 @@
 chcp 65001 >nul
 
 if "%~1"=="build" (
-    g++ -std=c++17 -Wall -Wextra -o app.exe src/main.cpp src/config.cpp
+    g++ -std=c++17 -Wall -Wextra -o app.exe src/main.cpp src/config.cpp src/maven.cpp
     if %errorlevel% neq 0 (
         echo Ошибка компиляции!
         exit /b 1
@@ -12,7 +12,7 @@ if "%~1"=="build" (
 )
 
 if "%~1"=="test" (
-    g++ -std=c++17 -Wall -Wextra -o test_app.exe tests/test_config.cpp src/config.cpp
+    g++ -std=c++17 -Wall -Wextra -o test_app.exe tests/test_config.cpp src/config.cpp src/maven.cpp
     if %errorlevel% neq 0 (
         echo Ошибка компиляции тестов!
         exit /b 1
@@ -36,7 +36,6 @@ if "%~1"=="" (
     exit /b 0
 )
 
-rem Если передан файл - запускаем приложение
 if exist app.exe (
     app.exe %~1
 ) else (
