@@ -78,7 +78,10 @@ std::vector<Dependency> getDirectDependencies(
             buffer << file.rdbuf();
             pomContent = buffer.str();
         } else {
-            throw std::runtime_error("Network fetching without external libraries requires local pom.xml or test_mode=true in this prototype.");
+            throw std::runtime_error(
+                "Network fetching without external libraries "
+                "requires local pom.xml or test_mode=true in this prototype."
+            );
         }
     }
 
