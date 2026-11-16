@@ -1,6 +1,9 @@
 #include "config.hpp"
 #include "maven.hpp"
+#include "graph.hpp"
 #include <iostream>
+#include <unordered_set>
+#include <vector>
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
@@ -31,6 +34,28 @@ int main(int argc, char* argv[]) {
                           << ", Artifact: " << dep.artifactId 
                           << ", Version: " << dep.version << "\n";
             }
+        }
+
+        std::cout << "\n--- Этап 4: Обратные зависимости (Reverse Dependencies) ---\n";
+        if (config.testMode) {
+            DependencyGraph forwardGraph = loadTestRepositoryGraph(config.repositoryUrl, config.filterSubstring);
+            DependencyGraph reverseGraph = buildReverseGraph(forwardGraph);
+
+            std::unordered_set<std::string> visited;
+            std::unordered_set<std::string> visiting;
+            std::vector<std::string> reverseDeps;
+
+            findReverseDependenciesDfs(config.packageName, reverseGraph, visited, visiting, reverseDeps);
+
+            if (reverseDeps.empty()) {
+                std::cout << "Обратные зависимости не найдены.\n";
+            } else {
+                for (const auto& pkg : reverseDeps) {
+                    std::cout << " - Dependent: " << pkg << "\n";
+                }
+            }
+        } else {
+            std::cout << "Режим обратных зависимостей для боевого репозитория поддерживается в тестовом графе.\n";
         }
 
     } catch (const std::exception& e) {

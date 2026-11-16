@@ -1,9 +1,9 @@
 {
-    "package_name": "httpclient",
-    "repository_url": "repo1.maven.org/maven2",
-    "test_mode": false,
-    "package_version": "4.5.14",
-    "output_file": "graph.png",
-    "ascii_tree": true,
-    "filter_substring": "test"
+  "package_name": "D",
+  "repository_url": "test_graph.txt",
+  "test_mode": true,
+  "package_version": "1.0.0",
+  "output_file": "graph.png",
+  "ascii_tree": true,
+  "filter_substring": ""
 }
