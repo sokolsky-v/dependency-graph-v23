@@ -18,4 +18,13 @@ void findReverseDependenciesDfs(
     std::vector<std::string>& result
 );
 
+void printAsciiTree(
+    const std::string& currentPackage,
+    const DependencyGraph& graph,
+    std::unordered_set<std::string>& visited,
+    int depth = 0
+);
+
+void saveD2Diagram(const DependencyGraph& graph, const std::string& outputPath);
+
 #endif

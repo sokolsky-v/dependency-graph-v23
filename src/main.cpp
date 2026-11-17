@@ -37,8 +37,9 @@ int main(int argc, char* argv[]) {
         }
 
         std::cout << "\n--- Этап 4: Обратные зависимости (Reverse Dependencies) ---\n";
+        DependencyGraph forwardGraph;
         if (config.testMode) {
-            DependencyGraph forwardGraph = loadTestRepositoryGraph(config.repositoryUrl, config.filterSubstring);
+            forwardGraph = loadTestRepositoryGraph(config.repositoryUrl, config.filterSubstring);
             DependencyGraph reverseGraph = buildReverseGraph(forwardGraph);
 
             std::unordered_set<std::string> visited;
@@ -56,6 +57,20 @@ int main(int argc, char* argv[]) {
             }
         } else {
             std::cout << "Режим обратных зависимостей для боевого репозитория поддерживается в тестовом графе.\n";
+        }
+
+        std::cout << "\n--- Этап 5: Визуализация (D2 & ASCII Tree) ---\n";
+        if (config.testMode && !forwardGraph.empty()) {
+            saveD2Diagram(forwardGraph, config.outputFile);
+            std::cout << "Граф сохранен в файл: " << config.outputFile << " (D2 формат)\n";
+
+            if (config.asciiTree) {
+                std::cout << "ASCII-дерево зависимостей для пакета " << config.packageName << ":\n";
+                std::unordered_set<std::string> treeVisited;
+                printAsciiTree(config.packageName, forwardGraph, treeVisited);
+            }
+        } else {
+            std::cout << "Визуализация в тестовом режиме использует файл графа.\n";
         }
 
     } catch (const std::exception& e) {
